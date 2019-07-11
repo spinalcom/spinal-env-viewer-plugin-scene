@@ -51,10 +51,6 @@
     },
     methods: {
       initialize: function ( option ) {
-
-        this.bimFile = option.bimFile;
-
-        console.log( option )
       },
       onNameChange: function ( value ) {
         this.name = value;
