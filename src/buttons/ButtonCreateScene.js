@@ -45,6 +45,6 @@ export class ButtonCreateScene extends SpinalContextApp {
   }
   
   openPanel() {
-    spinalPanelManagerService.openPanel( "DialogCreateScene", { bimFiles: children } );
+    spinalPanelManagerService.openPanel( "DialogCreateScene");
   }
 }
