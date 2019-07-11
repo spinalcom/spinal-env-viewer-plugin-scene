@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Vuetify from 'vuetify'
 import DialogCreateScene from "./src/vue/DialogCreateScene.vue";
 import { SpinalForgeExtention } from "spinal-env-viewer-panel-manager-service_spinalforgeextention";
-
+import 'spinal-env-viewer-plugin-forge'
 
 export const TOP_BAR_HOOK_NAME = 'GraphManagerTopBar';
 export const SIDE_BAR_HOOK_NAME = "GraphManagerSideBar";
