@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Vuetify from 'vuetify'
 import DialogCreateScene from "./src/vue/DialogCreateScene.vue";
 import { SpinalForgeExtention } from "spinal-env-viewer-panel-manager-service_spinalforgeextention";
-import {SpinalForgeViewer} from "spinal-env-viewer-plugin-forge";
+
 
 export const TOP_BAR_HOOK_NAME = 'GraphManagerTopBar';
 export const SIDE_BAR_HOOK_NAME = "GraphManagerSideBar";
@@ -46,7 +46,7 @@ const compareVersion =  SpinalForgeExtention.createExtention( {
   panel: {
     title: "Scene Manager",
     classname: "spinal-pannel",
-    closeBehaviour: "hide"
+    closeBehaviour: "delete"
   },
   style: {
     left: "805px",
@@ -59,6 +59,3 @@ const compareVersion =  SpinalForgeExtention.createExtention( {
 
 SpinalForgeExtention.registerExtention( "PanelSceneManager", compareVersion );
 
-
-//SpinalForgeExtention.registerExtention( "CreateSceneDialog",
-// CreateSceneDialog );
