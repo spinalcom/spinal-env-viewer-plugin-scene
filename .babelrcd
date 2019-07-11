@@ -1,0 +1,7 @@
+{
+  "sourceMaps": "inline",
+  "only": [
+    "src/SceneHelper.js"
+  ],
+  "plugins": ["@babel/plugin-proposal-class-properties"]
+}
