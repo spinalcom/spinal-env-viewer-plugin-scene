@@ -15,15 +15,15 @@ import {
 
 import { ButtonCreateScene } from "./src/buttons/ButtonCreateScene";
 import { ButtonOpenSceneManager } from "./src/buttons/ButtonOpenSceneManager";
-import { ButtonLoadScene} from "./src/buttons/ButtonLoadScene";
+import { ButtonLoadScene } from "./src/buttons/ButtonLoadScene";
 import PanelSceneManager from "./src/vue/PanelSceneManager.vue";
 
+Vue.use( Vuetify )
 
-Vue.use( Vuetify );
 
 
 if (!window.spinal.SpinalForgeViewer.isInitialize())
-  window.spinal.SpinalForgeViewer.initialize(window.spinal.ForgeViewer.viewerManager);
+  window.spinal.SpinalForgeViewer.initialize( window.spinal.ForgeViewer.viewerManager );
 
 spinalContextMenuService.registerApp( TOP_BAR_HOOK_NAME, new ButtonCreateScene(), [7] );
 spinalContextMenuService.registerApp( SIDE_BAR_HOOK_NAME, new ButtonOpenSceneManager(), [7] );
@@ -40,7 +40,7 @@ SpinalMountExtention.mount( {
 } );
 
 
-const compareVersion =  SpinalForgeExtention.createExtention( {
+const compareVersion = SpinalForgeExtention.createExtention( {
   name: 'PanelSceneManager',
   vueMountComponent: Vue.extend( PanelSceneManager ),
   panel: {
@@ -52,7 +52,8 @@ const compareVersion =  SpinalForgeExtention.createExtention( {
     left: "805px",
     width: "430px",
     height: "80vh",
-    display: "flex"
+    display: "flex",
+    overflow: "hidden"
   }
 } );
 

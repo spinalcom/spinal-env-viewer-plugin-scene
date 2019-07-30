@@ -1,5 +1,4 @@
 import { SpinalContextApp } from 'spinal-env-viewer-context-menu-service';
-import { SpinalGraphService } from "spinal-env-viewer-graph-service";
 import { SCENE_TYPE } from "../constants";
 
 
@@ -19,6 +18,7 @@ export class ButtonLoadScene extends SpinalContextApp {
   }
   
   isShown( option ) {
+    console.log(option)
     if (option.selectedNode.type.get() === SCENE_TYPE)
       return Promise.resolve( true );
     return Promise.resolve( -1 );

@@ -33,8 +33,7 @@ class SceneHelper {
           SceneHelper.context = context;
     
           SceneHelper.contextId = context.info.id.get();
-          console.log(SceneHelper);
-          console.log(SceneHelper.contextId);
+      
           resolve(true);
         }).catch(reject);
       }
@@ -64,7 +63,8 @@ class SceneHelper {
   static addModelToScene( sceneId, bimFileId ) {
     return SceneHelper.initialize()
       .then( () => {
-        return SpinalGraphService.addChildInContext( sceneId, bimFileId, SceneHelper.contextId,
+        return SpinalGraphService
+          .addChildInContext( sceneId, bimFileId, SceneHelper.contextId,
           PART_RELATION_NAME, PART_RELATION_TYPE );
       } )
   }

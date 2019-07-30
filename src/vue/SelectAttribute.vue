@@ -1,39 +1,30 @@
 <template>
+    <v-container grid-list-md text-xs-center>
+        <v-layout align-center justify-space-around row>
+            <v-flex>
+                <v-autocomplete
+                        :reverse="true"
+                        :dark="true"
+                        id="autocomplete"
+                        :attach="container"
+                        v-model="model"
+                        :items="attributesName"
+                        label="Attribute name"
+                        persistent-hint
+                        prepend-icon="mdi-city"
+                />
+            </v-flex>
 
-    <v-layout wrap align-center>
-        <v-flex xs12 sm6 d-flex>
-
-            <v-text-field
-                    dark
-                    input="attributeName"
-                    @change="onValueNameChange"
-                    label="Value"
-            ></v-text-field>
-            <div v-if="attributeName.length > 0">
-                <v-card>
-                    <div @click="console.log(attributeName)"
-                         v-for="attributeName in attributesName">
-                        {{attributeName}}
-                    </div>
-                </v-card>
-            </div>
-        </v-flex>
-        <v-flex xs12 sm6 d-flex>
-            <v-text-field
-                    dark
-                    @change="onValueNameChange"
-                    label="Value"
-            ></v-text-field>
-        </v-flex>
-    </v-layout>
-
-
-    <v-btn v-if="currentModel !== null"
-           @click="onSearchAttribute">search
-    </v-btn>
-    <v-btn v-else
-           @click="loadModel">load
-    </v-btn>
+            <v-flex>
+                <v-text-field
+                        dark
+                        input="attributeName"
+                        @change="onValueChange"
+                        label="Value"
+                />
+            </v-flex>
+        </v-layout>
+    </v-container>
 
 </template>
 
@@ -44,13 +35,32 @@
       attributesName: {
         type: Array,
         required: true
-      }
+      },
+      container: {
+        type: Element,
+        required: true
+      },
+
     },
     data: function () {
       return {
-        attributeName: ""
+        attributeName: "",
+        model: null,
       }
-    }
+    },
+
+    methods: {
+      onValueChange( e ) {
+        this.$emit( 'value-change', {value: e, attribute: this.model} );
+      }
+
+    },
+    watch: {
+      model: function ( value ) {
+        this.$emit( 'attribute-selected', value );
+        console.log( value )
+      }
+    },
 
   }
 </script>

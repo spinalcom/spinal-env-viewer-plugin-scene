@@ -1,4 +1,4 @@
-export function test (m, attributeName, attributeVal){
+export function filterDbid (m, attributeName, attributeVal){
   const fun = `function userFunction(pdb){
   const res = [];
   let attrNameId = -1;
@@ -30,14 +30,12 @@ export function test (m, attributeName, attributeVal){
   return {dbIds: res, attrId: attrNameId };
 }
 `;
-  
-  
   return m.getPropertyDb().executeUserFunction(fun);
 }
 
 
 
-function getAttributeName(){
+export function getAttributeName(m){
   const fun = `function userFunction(pdb){
   const res = [];
   let attrNameId = -1;
