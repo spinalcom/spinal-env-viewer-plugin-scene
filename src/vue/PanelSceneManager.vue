@@ -7,8 +7,6 @@
                 dark
                 v-model="step"
         >
-
-
             <v-stepper-step
                     editable
                     :complete="step > 1"
@@ -370,8 +368,6 @@
         for (let i = 0; i < this.selectedModels.length; i++) {
           const modelName = this.selectedModels[i];
           let model = window.spinal.BimObjectService.getModelByName( modelName );
-          let bimFile = this.bimFiles.find( file => file.name.get() === modelName );
-          console.log( 'das', bimFile );
           if (typeof model !== 'undefined') {
             info['options'].push( {
               urn: model.myData.urn,
@@ -426,9 +422,9 @@
           Promise.all( nodeToRemove )
             .then( () => {
               Promise.all( nodeToAdd )
-                .then(() => {
+                .then( () => {
                   SpinalGraphService.modifyNode( this.scene.id.get(), info )
-                })
+                } )
             } )
         } );
 
