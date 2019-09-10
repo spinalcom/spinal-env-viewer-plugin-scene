@@ -52,16 +52,12 @@ export class ButtonOpenSceneManager extends SpinalContextApp {
   
   
   openPanel( option ) {
-    console.log(option);
     const context = SpinalGraphService.getContext( 'BimFileContext' );
     const promises = [];
     
     SpinalGraphService.getChildrenInContext( context.info.id.get(), context.info.id.get() )
       .then( children => {
-        
         spinalPanelManagerService.openPanel( "PanelSceneManager", { scene: option.selectedNode,  bimFiles: children} );
-        
-        
       } )
   }
 }
