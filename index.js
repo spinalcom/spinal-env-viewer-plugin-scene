@@ -18,6 +18,7 @@ import { ButtonOpenSceneManager } from "./src/buttons/ButtonOpenSceneManager";
 import { ButtonLoadScene } from "./src/buttons/ButtonLoadScene";
 import PanelSceneManager from "./src/vue/PanelSceneManager.vue";
 import { SpinalGraphService } from "spinal-env-viewer-graph-service";
+import { ButtonLoadModel } from "./src/buttons/ButtonLoadModel";
 
 Vue.use( Vuetify )
 
@@ -27,31 +28,35 @@ if (!window.spinal.SpinalForgeViewer.isInitialize())
   window.spinal.SpinalForgeViewer.initialize( window.spinal.ForgeViewer.viewerManager );
 
 
-const interval = setInterval(()=> {
-  
-  
-  const context = SpinalGraphService.getContext( 'Scenes' );
-  if (typeof context !== "undefined" && window.spinal.SpinalForgeViewer.isInitialize()) {
-  
-    SpinalGraphService.getChildrenInContext( context.info.id.get(), context.info.id.get() )
-      .then( children => {
-        for (let i = 0; i < children.length; i++) {
-          if (children[i].autoLoad.get())
-            window.spinal.SpinalForgeViewer.loadModelFromNode(children[i].id.get())
-        }
-        
-        clearInterval(interval);
-      
-      } ).catch(e => {
-        console.error(e);
-        clearInterval(interval); })
-  }
-  
-}, 200);
+async function waitForGraph() {
+  await SpinalGraphService.waitForInitialization();
+  const context = SpinalGraphService.getContext('Scenes');
+  let running = false;
+  const interval = setInterval(()=>{
+    if (!running && typeof context !== "undefined" && window.spinal.SpinalForgeViewer.isInitialize()) {
+      running = true;
+      return SpinalGraphService.getChildrenInContext(context.info.id.get(), context.info.id.get())
+        .then(children => {
+          for (let i = 0; i < children.length; i++) {
+            if (children[i].autoLoad.get()) {
+              window.spinal.SpinalForgeViewer.loadModelFromNode(children[i].id.get());
+            }
+          }
+          clearInterval(interval);
+        }).catch(e => {
+          console.error(e);
+          clearInterval(interval);
+        });
+    }
+  }, 200);
+}
+
+waitForGraph();
+
 
 spinalContextMenuService.registerApp( TOP_BAR_HOOK_NAME, new ButtonCreateScene(), [7] );
 spinalContextMenuService.registerApp( SIDE_BAR_HOOK_NAME, new ButtonOpenSceneManager(), [7] );
-
+spinalContextMenuService.registerApp( SIDE_BAR_HOOK_NAME, new ButtonLoadModel(), [7] );
 spinalContextMenuService.registerApp( SIDE_BAR_HOOK_NAME, new ButtonLoadScene(), [7] );
 
 SpinalMountExtention.mount( {
