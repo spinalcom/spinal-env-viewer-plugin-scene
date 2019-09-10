@@ -18,7 +18,6 @@ export class ButtonLoadScene extends SpinalContextApp {
   }
   
   isShown( option ) {
-    console.log(option)
     if (option.selectedNode.type.get() === SCENE_TYPE)
       return Promise.resolve( true );
     return Promise.resolve( -1 );
@@ -26,6 +25,5 @@ export class ButtonLoadScene extends SpinalContextApp {
   
   openPanel(option) {
     window.spinal.SpinalForgeViewer.loadModelFromNode(option.selectedNode.id.get())
-    console.log(option)
   }
 }
