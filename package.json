@@ -12,6 +12,7 @@
   "dependencies": {
     "@babel/polyfill": "^7.4.4",
     "spinal-env-viewer-graph-service": "git+https://github.com/spinalcom/spinal-graph-service.git",
+    "spinal-env-viewer-context-menu-service": "git+https://github.com/spinalcom/spinal-env-viewer-context-menu-service.git",
     "spinal-env-viewer-panel-manager-service": "git+https://github.com/spinalcom/spinal-env-viewer-panel-manager-service.git",
     "spinal-env-viewer-panel-manager-service_spinalforgeextention": "git+https://github.com/spinalcom/spinal-env-viewer-panel-manager-service_spinalforgeextention.git",
     "spinal-env-viewer-plugin-forge": "https://github.com/spinalcom/spinal-env-viewer-plugin-forge",
