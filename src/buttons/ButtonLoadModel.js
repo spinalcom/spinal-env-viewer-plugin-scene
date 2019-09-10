@@ -25,7 +25,6 @@ export class ButtonLoadModel extends SpinalContextApp {
   }
   
   openPanel(option) {
-    console.log(window.spinal.SpinalForgeViewer)
     window.spinal.SpinalForgeViewer.loadModelFromBimFile(option.selectedNode)
   }
 }
