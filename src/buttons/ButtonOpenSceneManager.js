@@ -43,7 +43,6 @@ export class ButtonOpenSceneManager extends SpinalContextApp {
   }
   
   isShown( option ) {
-    
     if (option.selectedNode.type.get() === SCENE_TYPE)
       return Promise.resolve( true );
     return Promise.resolve(-1);
@@ -53,7 +52,10 @@ export class ButtonOpenSceneManager extends SpinalContextApp {
   
   openPanel( option ) {
     const context = SpinalGraphService.getContext( 'BimFileContext' );
-    const promises = [];
+    if (typeof context === "undefined") {
+      alert("aucun bimFile dans le Digital tween");
+      return
+    }
     
     SpinalGraphService.getChildrenInContext( context.info.id.get(), context.info.id.get() )
       .then( children => {
