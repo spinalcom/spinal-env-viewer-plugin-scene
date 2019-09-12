@@ -1,6 +1,4 @@
 <template>
-
-
     <v-app class="scene-manager" dark>
         <v-stepper
                 vertical
@@ -15,7 +13,6 @@
                 Select models
             </v-stepper-step>
             <v-stepper-content step="1" id="step1">
-
                 <v-select
                         v-model="selectedModels"
                         :items="bimFilesComputed"
@@ -26,10 +23,7 @@
                         :attach="container"
                 >
                 </v-select>
-
-
             </v-stepper-content>
-
             <v-stepper-step
                     editable
                     :complete="step > 2"
@@ -43,6 +37,10 @@
                         label="Use whole digital twin"
                 ></v-checkbox>
 
+                <v-checkbox
+                        v-model="autoPosition"
+                        label="Use models inner position"
+                ></v-checkbox>
                 <div v-if="!useAllModels">
                     <v-layout align-center justify-space-around row>
                         <v-flex>
@@ -135,7 +133,7 @@
     PART_RELATION_NAME,
     PART_RELATION_TYPE
   } from "../constants";
-  
+
   export default {
     name: "PanelSceneManager",
     components: { SelectAttribute },
@@ -144,12 +142,16 @@
         step1Container: null,
         step2Container: null,
         step3Container: null,
+        autoPosition: false,
 
         displayNeedToLoadModel: false,
         modelLoaded: false,
         selection: { nb: 0 },
         models: {},
         useAllModels: true,
+
+        mModels: [],
+        modelPosition: {},
         autoLoad: false,
         selectedModels: [],
         bimFilesComputed: [],
@@ -159,15 +161,15 @@
 
         sceneName: "",
         sceneDescr: "",
-        
-        
+
+
         associatedModel: [],
         attributesName: [],
         isBimFileSelectorOpen: false,
         modifyModelItem: false,
         modelNeedToBeLoad: false,
         currentModel: null,
-        
+
         attributeName: "",
         attributeVal: "",
         container: null,
@@ -191,6 +193,25 @@
             }
           }
         }
+      },
+      autoPosition:{
+        handler:  function ( value ) {
+
+          if (value &&  !this.modelLoaded)
+            this.loadAllModel()
+              .then(() => {
+                console.log("ok", this.mModels, typeof this.mModels,
+                  this.mModels.length)
+                for (let i = 0; i < this.mModels.length; i++) {
+                  let meta = this.mModels[i];
+                  console.log('adasdasd',  meta)
+                  this.modelPosition[meta.model.id] = {
+                    globalOffset: meta.model.getData().globalOffset,
+                  }
+                }
+              } )
+        },
+        immediate: true
       }
     },
     computed: {
@@ -202,7 +223,7 @@
       description: function () {
         if (this.scene !== null)
           return this.scene.description.get();
-        
+
         return "";
       },
       nbModel: function () {
@@ -233,7 +254,7 @@
 
         this.bimFilesComputed = this.bimFiles
           .map( bimfile => { return bimfile.name.get()} );
-        
+
         this.useAllModels = typeof this.scene.useAllModels !== "undefined" ?
           this.scene.useAllModels.get() : false;
 
@@ -256,16 +277,16 @@
         return 0;
       },
       openBimFileSelector: function () {
-        
+
       },
       opened: function ( option ) {
         this.initialize( option );
       },
       removed: function () {
-        
+
       },
       closeDialog: function ( closeResult ) {
-        
+
       },
       addModelToScene: function ( bimFile ) {
         SceneHelper.addModelToScene( this.scene.id.get(), bimFile.id.get() ).then(
@@ -280,11 +301,11 @@
           dbIds: []
         };
         info['name'] = m;
-        
+
         const model = window.spinal.BimObjectService.getModelByName( m );
         if (typeof model === "undefined")
           return info;
-        
+
         info['model'] = model;
         info['dbIds'] = this.selection[model.id];
         return info;
@@ -303,7 +324,9 @@
         for (let i = 0; i < this.bimFiles.length; i++) {
           proms.push( window.spinal.SpinalForgeViewer.loadBimFile( this.bimFiles[i] ) )
         }
-        Promise.all( proms ).then( () => {
+        return Promise.all( proms ).then( (res) => {
+          this.mModels = res;
+          console.log(res)
           this.displayNeedToLoadModel = false;
           this.modelLoaded = true;
         } );
@@ -325,10 +348,10 @@
         }
       },
       getSelection: function () {
-        
+
         const selection =
           window.spinal.ForgeViewer.viewer.getAggregateSelection();
-        
+
         for (let i = 0; i < selection.length; i++) {
           if (selection[i].hasOwnProperty( "model" )) {
             let dbids = this.selection[selection[i].model.id];
@@ -371,9 +394,11 @@
           if (typeof model !== 'undefined') {
             info['options'].push( {
               urn: model.myData.urn,
-              dbIds: this.selection[model.id]
+              dbIds: this.selection[model.id],
+              loadOption: this.modelPosition[model.id]
             } );
           }
+
         }
         SpinalGraphService.getChildren( this.scene.id.get(),
           [PART_RELATION_NAME] ).then( children => {

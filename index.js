@@ -20,11 +20,13 @@ import PanelSceneManager from "./src/vue/PanelSceneManager.vue";
 import { SpinalGraphService } from "spinal-env-viewer-graph-service";
 import { ButtonLoadModel } from "./src/buttons/ButtonLoadModel";
 
+
+
 Vue.use( Vuetify )
 
 
 
-if (!window.spinal.SpinalForgeViewer.isInitialize())
+if ( !window.spinal.SpinalForgeViewer.isInitialize())
   window.spinal.SpinalForgeViewer.initialize( window.spinal.ForgeViewer.viewerManager );
 
 
