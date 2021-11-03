@@ -271,7 +271,10 @@ export default {
         typeof this.scene.useAllModels !== "undefined"
           ? this.scene.useAllModels.get()
           : false;
-      this.loadOptionSelected = this.scene["sceneAlignMethod"].get();
+      this.loadOptionSelected =
+        typeof this.scene.sceneAlignMethod !== "undefined"
+          ? this.scene.sceneAlignMethod.get()
+          : 0;
       this.autoLoad = this.scene.autoLoad.get();
       if (typeof this.scene.option !== "undefined") {
         for (let i = 0; i < this.scene.options; i++) {
